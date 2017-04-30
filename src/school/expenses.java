@@ -1,5 +1,13 @@
 package school;
 
+import java.awt.HeadlessException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import net.proteanit.sql.DbUtils;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -15,10 +23,33 @@ public class expenses extends javax.swing.JFrame {
     /**
      * Creates new form Home
      */
+    
+    Connection con = null;
+    PreparedStatement pst = null;
+    ResultSet rs = null;
+    
+    
     public expenses() {
         initComponents();
+        
+        con = Connect.connect();
+        fatch();
     }
+public void fatch() {
 
+        try {
+            String g = "select * from expenses";
+
+            pst = con.prepareStatement(g);
+            rs = pst.executeQuery();
+
+            jTable1.setModel(DbUtils.resultSetToTableModel(rs));
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -560,6 +591,11 @@ public class expenses extends javax.swing.JFrame {
                 "ID", "Name", "price", "Teacher Name", "Notes"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jPanel1.add(jScrollPane1);
@@ -576,17 +612,14 @@ public class expenses extends javax.swing.JFrame {
         jPanel1.add(expenses_id);
         expenses_id.setBounds(110, 130, 240, 40);
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/23.png"))); // NOI18N
         jLabel3.setText("jLabel2");
         jPanel1.add(jLabel3);
         jLabel3.setBounds(30, 180, 80, 40);
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/24.png"))); // NOI18N
         jLabel6.setText("jLabel2");
         jPanel1.add(jLabel6);
         jLabel6.setBounds(30, 230, 80, 40);
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/26.png"))); // NOI18N
         jLabel7.setText("jLabel2");
         jPanel1.add(jLabel7);
         jLabel7.setBounds(30, 330, 80, 40);
@@ -609,15 +642,22 @@ public class expenses extends javax.swing.JFrame {
         jPanel1.add(jScrollPane2);
         jScrollPane2.setBounds(110, 330, 240, 80);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/19.png"))); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton1);
         jButton1.setBounds(120, 500, 190, 40);
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/20.png"))); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton2);
         jButton2.setBounds(120, 560, 190, 40);
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/21.png"))); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -626,11 +666,14 @@ public class expenses extends javax.swing.JFrame {
         jPanel1.add(jButton3);
         jButton3.setBounds(1050, 620, 190, 40);
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/18.png"))); // NOI18N
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton4);
         jButton4.setBounds(120, 440, 190, 40);
 
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/22.png"))); // NOI18N
         jLabel12.setText("jLabel2");
         jPanel1.add(jLabel12);
         jLabel12.setBounds(30, 130, 80, 40);
@@ -646,12 +689,9 @@ public class expenses extends javax.swing.JFrame {
         jPanel1.add(exp_date);
         exp_date.setBounds(110, 280, 240, 40);
 
-        jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/53.png"))); // NOI18N
         jLabel14.setText("jLabel2");
         jPanel1.add(jLabel14);
         jLabel14.setBounds(30, 280, 80, 40);
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/17.png"))); // NOI18N
         jPanel1.add(jLabel1);
         jLabel1.setBounds(-70, 0, 1400, 710);
 
@@ -683,6 +723,122 @@ public class expenses extends javax.swing.JFrame {
     private void exp_dateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exp_dateActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_exp_dateActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+ con = Connect.connect();
+        if (name.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Enter the Name");
+        }
+        if (price.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Enter price");
+        }
+
+        try {
+            String sql = "select name from expenses where name='" + name.getText() + "'";
+            con = Connect.connect();
+            pst = con.prepareStatement(sql);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                JOptionPane.showMessageDialog(null, "name already exist");
+            }
+
+            String sql2 = "insert into expenses(name,price,notes,date_exp)values( '" + name.getText() + "','" + price.getText() + "','" + notes.getText() + "','" + exp_date.getText() + "')";
+            pst = con.prepareStatement(sql2);
+            pst.execute();
+            JOptionPane.showMessageDialog(null, "saved successfully");
+
+        } catch (SQLException | HeadlessException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        fatch();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+ con = Connect.connect();
+        if (name.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Enter the Name");
+        }
+        if (price.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Enter price");
+        }
+        try {
+            String sql = "update expenses set name='" + name.getText() + "',price='" + price.getText() + "',notes='" + notes.getText() + "',date_exp='" + exp_date.getText() + "' where expenses_id='" + expenses_id.getText() + "'";
+            pst = con.prepareStatement(sql);
+            pst.execute();
+            JOptionPane.showMessageDialog(null, "updated successfully");
+
+        } catch (SQLException | HeadlessException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+
+        fatch();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
+ con = Connect.connect();
+        if (name.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Enter the Name");
+        }
+
+        con = Connect.connect();
+        int val = JOptionPane.showConfirmDialog(null, "do you want to delete");
+        if (val == 0) {
+            try {
+                String sql = "delete from expenses where expenses_id='" + expenses_id.getText() + "' ";
+
+                pst = con.prepareStatement(sql);
+                pst.execute();
+                JOptionPane.showMessageDialog(null, "deleted successfully");
+
+            } catch (SQLException | HeadlessException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage());
+            }
+
+        }
+        fatch();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+
+int r = jTable1.getSelectedRow();
+        String n = jTable1.getModel().getValueAt(r, 0).toString();
+        try {
+
+            String sql1 = "Select * from expenses where expenses_id = '" + n + "'";
+
+            pst = con.prepareStatement(sql1);
+            rs = pst.executeQuery();
+
+            if (rs.next()) {
+                String code = rs.getString("expenses_id");
+                expenses_id.setText(code);
+
+                String x = rs.getString("name");
+                name.setText(x);
+
+                String x1 = rs.getString("price");
+                price.setText(x1);
+
+                String x2 = rs.getString("notes");
+                notes.setText(x2);
+
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            JOptionPane.showMessageDialog(this, "error" + e.getMessage());
+            e.printStackTrace();
+        }
+
+
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable1MouseClicked
 
    
 

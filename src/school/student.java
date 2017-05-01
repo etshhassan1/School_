@@ -1,5 +1,13 @@
 package school;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import net.proteanit.sql.DbUtils;
+import java.text.SimpleDateFormat;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -11,12 +19,28 @@ package school;
  * @author Etsh
  */
 public class student extends javax.swing.JFrame {
+ResultSet rs = null;
+    PreparedStatement st = null;
+    Connection con = null;
 
     /**
      * Creates new form Home
      */
     public student() {
         initComponents();
+        
+        
+        fatch();
+    }
+    public void fatch() {
+        try {
+            String g = "select id,name,phone,ph_phone,address,stage,class_num,age,start_date,notes from student";
+            st = con.prepareStatement(g);
+            rs = st.executeQuery();
+            jTable1.setModel(DbUtils.resultSetToTableModel(rs));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
     }
 
     /**
@@ -52,7 +76,6 @@ public class student extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         age = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        start_date = new com.toedter.calendar.JDateChooser();
         stage = new javax.swing.JComboBox<>();
         class_num = new javax.swing.JComboBox<>();
         Search = new javax.swing.JComboBox<>();
@@ -573,13 +596,22 @@ public class student extends javax.swing.JFrame {
                 "ID", "Name", "price", "Teacher Name", "Notes"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jPanel1.add(jScrollPane1);
         jScrollPane1.setBounds(452, 112, 790, 500);
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/34.png"))); // NOI18N
         jLabel2.setText("jLabel2");
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
+        });
         jPanel1.add(jLabel2);
         jLabel2.setBounds(450, 60, 120, 40);
 
@@ -594,27 +626,22 @@ public class student extends javax.swing.JFrame {
         jPanel1.add(id);
         id.setBounds(110, 60, 240, 40);
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/23.png"))); // NOI18N
         jLabel3.setText("jLabel2");
         jPanel1.add(jLabel3);
         jLabel3.setBounds(30, 110, 80, 40);
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/31.png"))); // NOI18N
         jLabel4.setText("jLabel2");
         jPanel1.add(jLabel4);
         jLabel4.setBounds(30, 260, 80, 40);
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/30.png"))); // NOI18N
         jLabel5.setText("jLabel2");
         jPanel1.add(jLabel5);
         jLabel5.setBounds(30, 210, 80, 40);
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/29.png"))); // NOI18N
         jLabel6.setText("jLabel2");
         jPanel1.add(jLabel6);
         jLabel6.setBounds(30, 160, 80, 40);
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/26.png"))); // NOI18N
         jLabel7.setText("jLabel2");
         jPanel1.add(jLabel7);
         jLabel7.setBounds(30, 510, 80, 40);
@@ -652,15 +679,22 @@ public class student extends javax.swing.JFrame {
         jPanel1.add(jScrollPane2);
         jScrollPane2.setBounds(110, 510, 240, 80);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/19.png"))); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton1);
         jButton1.setBounds(650, 620, 190, 40);
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/20.png"))); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton2);
         jButton2.setBounds(850, 620, 190, 40);
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/21.png"))); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -669,16 +703,18 @@ public class student extends javax.swing.JFrame {
         jPanel1.add(jButton3);
         jButton3.setBounds(1050, 620, 190, 40);
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/18.png"))); // NOI18N
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton4);
         jButton4.setBounds(450, 620, 190, 40);
 
-        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/33.png"))); // NOI18N
         jLabel8.setText("jLabel2");
         jPanel1.add(jLabel8);
         jLabel8.setBounds(30, 460, 80, 40);
 
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/32.png"))); // NOI18N
         jLabel9.setText("jLabel2");
         jPanel1.add(jLabel9);
         jLabel9.setBounds(30, 410, 80, 40);
@@ -688,26 +724,9 @@ public class student extends javax.swing.JFrame {
         jPanel1.add(age);
         age.setBounds(110, 410, 240, 40);
 
-        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/28.png"))); // NOI18N
         jLabel10.setText("jLabel2");
         jPanel1.add(jLabel10);
         jLabel10.setBounds(30, 360, 80, 40);
-
-        start_date.setBackground(new java.awt.Color(255, 255, 204));
-        start_date.setToolTipText("");
-        start_date.setDateFormatString("yyyy-MM-dd");
-        start_date.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        start_date.addAncestorListener(new javax.swing.event.AncestorListener() {
-            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
-                start_dateAncestorAdded(evt);
-            }
-            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
-            }
-            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
-            }
-        });
-        jPanel1.add(start_date);
-        start_date.setBounds(110, 460, 240, 40);
 
         stage.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jPanel1.add(stage);
@@ -722,7 +741,6 @@ public class student extends javax.swing.JFrame {
         jPanel1.add(Search);
         Search.setBounds(810, 60, 130, 40);
 
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/22.png"))); // NOI18N
         jLabel12.setText("jLabel2");
         jPanel1.add(jLabel12);
         jLabel12.setBounds(30, 60, 80, 40);
@@ -732,14 +750,11 @@ public class student extends javax.swing.JFrame {
         jPanel1.add(ser);
         ser.setBounds(570, 60, 240, 40);
 
-        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/25.png"))); // NOI18N
         jLabel11.setText("jLabel2");
         jPanel1.add(jLabel11);
         jLabel11.setBounds(30, 310, 80, 40);
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/17.png"))); // NOI18N
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(-70, 0, 1400, 710);
+        jLabel1.setBounds(-30, 30, 1400, 710);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -773,6 +788,157 @@ public class student extends javax.swing.JFrame {
     private void start_dateAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_start_dateAncestorAdded
         // TODO add your handling code here:
     }//GEN-LAST:event_start_dateAncestorAdded
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        
+
+        try {
+            String sdate = ((JTextField) start_date.getDateEditor().getUiComponent()).getText();
+
+            String sql = "insert into student(name,phone,ph_phone,address,stage,class_num,age,start_date,notes) values "
+                    + "('" + name.getText() + "','" + phone.getText() + "','" + ph_phone.getText() + "','" + address.getText() + "','" + stage.getSelectedItem() + "','" + class_num.getSelectedItem() + "','" + age.getText() + "','" + sdate + "','" + notes.getText() + "')";
+
+            st = con.prepareStatement(sql);
+            st.execute();
+
+            JOptionPane.showMessageDialog(null, "Saved Successfully");
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+
+        fatch();
+
+
+// TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+String sdate = ((JTextField) start_date.getDateEditor().getUiComponent()).getText();
+
+        try {
+            String sql = "update  student set name='" + name.getText() + "',phone='" + phone.getText() + "',ph_phone='" + ph_phone.getText() + "',address='" + address.getText() + "',stage='" + stage.getSelectedItem() + "',class_num='" + class_num.getSelectedItem() + "',age='" + age.getText() + "',start_date='" + sdate + "',notes='" + notes.getText() + "'where id='"+id.getText()+"' " ;
+
+            st = con.prepareStatement(sql);
+            st.execute();
+            JOptionPane.showMessageDialog(null, "Edited Successfully");
+        } catch (Exception e) {
+
+        }
+        fatch();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if (name.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Enter Name");
+        }
+        con = Connect.connect();
+        String sql = "delete from student where name='" + name.getText() + "'";
+        try {
+            st = con.prepareStatement(sql);
+            st.execute();
+            JOptionPane.showMessageDialog(null, "Deleted Successfully");
+        } catch (Exception e) {
+
+        }
+        fatch();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        // TODO add your handling code here:
+            
+        
+        if(Search.getSelectedItem().equals("Name"))
+      {
+          try {
+              //String sql3="SELECT * FROM `student` WHERE CONCAT(`name`)LIKE'%"+ser.getText()+"%'";
+              String g = "select id,name,phone,ph_phone,address,stage,class_num,age,start_date,notes from student where name='"+ser.getText()+"' " ;
+
+               st = con.prepareStatement(g);
+                           rs = st.executeQuery();
+
+            jTable1.setModel(DbUtils.resultSetToTableModel(rs));
+          } catch (Exception e) {
+          }
+      }else if (Search.getSelectedItem().equals("Phone"))
+      {
+       try {
+              //String sql4="SELECT * FROM `student` WHERE CONCAT(`phone`)LIKE'%"+ser.getText()+"%'";
+                            String g1 = "select id,name,phone,ph_phone,address,stage,class_num,age,start_date,notes from student where phone='"+ser.getText()+"' " ;
+
+               st = con.prepareStatement(g1);
+                           rs = st.executeQuery();
+
+            jTable1.setModel(DbUtils.resultSetToTableModel(rs));
+          } catch (Exception e) {
+          }
+          
+      }else if (Search.getSelectedItem().equals("Stage"))
+      {
+       try {
+              //String sql5="SELECT * FROM `student` WHERE CONCAT(`stage`)LIKE'%"+ser.getText()+"%'";
+                                          String g12 = "select id,name,phone,ph_phone,address,stage,class_num,age,start_date,notes from student where Stage='"+ser.getText()+"' " ;
+
+               st = con.prepareStatement(g12);
+                           rs = st.executeQuery();
+
+            jTable1.setModel(DbUtils.resultSetToTableModel(rs));
+          } catch (Exception e) {
+          }
+      }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel2MouseClicked
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+ int r = jTable1.getSelectedRow();
+        String n = jTable1.getModel().getValueAt(r, 0).toString();
+        try {
+
+            String sql1 = "Select * from student where id = '" + n + "'";
+
+            st = con.prepareStatement(sql1);
+            rs = st.executeQuery();
+
+            if (rs.next()) {
+                String code = rs.getString("id");
+                id.setText(code);
+
+                String x = rs.getString("name");
+                name.setText(x);
+                String x4 = rs.getString("phone");
+                phone.setText(x4);
+
+                String x5 = rs.getString("ph_phone");
+                ph_phone.setText(x5);
+
+                String x1 = rs.getString("address");
+                address.setText(x1);
+
+                String x6 = rs.getString("stage");
+                stage.setSelectedItem(x6);
+
+                String x3 = rs.getString("class_num");
+                class_num.setSelectedItem(x3);
+
+                String x2 = rs.getString("age");
+                age.setText(x2);
+
+                java.sql.Date date2 = rs.getDate("start_date");
+                start_date.setDate(date2);
+
+                String x8 = rs.getString("notes");
+                notes.setText(x8);
+
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            JOptionPane.showMessageDialog(this, " Error to retrieve data" + e.getMessage());
+        }        // TODO add your handling code here:
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable1MouseClicked
 
    
 
@@ -808,6 +974,5 @@ public class student extends javax.swing.JFrame {
     protected javax.swing.JTextField phone;
     protected javax.swing.JTextField ser;
     private javax.swing.JComboBox<String> stage;
-    private com.toedter.calendar.JDateChooser start_date;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,8 +1,11 @@
 package school;
 
+import static com.oracle.webservices.internal.api.databinding.DatabindingModeFeature.ID;
+import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import net.proteanit.sql.DbUtils;
@@ -740,6 +743,11 @@ public class employees extends javax.swing.JFrame {
         ser.setBounds(580, 70, 240, 40);
 
         jLabel2.setText("jLabel2");
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
+        });
         jPanel1.add(jLabel2);
         jLabel2.setBounds(460, 70, 120, 40);
 
@@ -1007,6 +1015,42 @@ int r=jTable1.getSelectedRow();
 
         // TODO add your handling code here:
     }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        // TODO add your handling code here:
+        con = Connect.connect();
+
+        if (Search.getSelectedItem().equals("ID")) {
+            try {
+                String sql = "select* from employees where employees_id='" +ser.getText() + "'";
+                con = Connect.connect();
+                pst = con.prepareStatement(sql);
+                rst = pst.executeQuery();
+                jTable1.setModel(DbUtils.resultSetToTableModel(rst));
+
+            } catch (SQLException | HeadlessException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage());
+            }
+        }
+        
+         if (Search.getSelectedItem().equals("Name")) {
+            try {
+                String sql = "select* from employees where employees_name ='" +ser.getText() + "'";
+                con = Connect.connect();
+                pst = con.prepareStatement(sql);
+                rst = pst.executeQuery();
+                jTable1.setModel(DbUtils.resultSetToTableModel(rst));
+
+            } catch (SQLException | HeadlessException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage());
+            }
+
+// TODO add your handling code here:
+        //search
+    }                                    
+
+    
+    }//GEN-LAST:event_jLabel2MouseClicked
 
     
 

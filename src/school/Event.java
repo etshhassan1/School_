@@ -1,5 +1,12 @@
 package school;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import net.proteanit.sql.DbUtils;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -12,13 +19,50 @@ package school;
  */
 public class Event extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Home
-     */
+  Connection con=null;
+    PreparedStatement pst = null;
+    ResultSet rst=null;
+
     public Event() {
         initComponents();
+        
+        
+        con=Connect.connect();
+        fatch();
     }
 
+    public void fatch(){
+    
+    try {
+   String g ="select * from event" ;
+   
+    pst =con.prepareStatement(g);
+    rst=pst.executeQuery();
+
+    
+   jTable1.setModel(DbUtils.resultSetToTableModel(rst));
+        
+    }
+    
+    catch (Exception e)
+        {
+             JOptionPane.showMessageDialog(null, e);
+        }
+    
+    }
+    
+    
+    protected void reset(){
+       
+       
+        Event f = new Event();
+        f.show();
+        this.hide();
+        
+    }
+
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -48,15 +92,14 @@ public class Event extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
-        end_date = new com.toedter.calendar.JDateChooser();
+        end_date = new org.netbeans.modules.form.InvalidComponent();
         jLabel12 = new javax.swing.JLabel();
-        start_date = new com.toedter.calendar.JDateChooser();
+        start_date = new org.netbeans.modules.form.InvalidComponent();
         jLabel13 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setMinimumSize(new java.awt.Dimension(1330, 710));
         jPanel1.setLayout(null);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -582,27 +625,22 @@ public class Event extends javax.swing.JFrame {
         jPanel1.add(event_id);
         event_id.setBounds(110, 60, 240, 40);
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/23.png"))); // NOI18N
         jLabel3.setText("jLabel2");
         jPanel1.add(jLabel3);
         jLabel3.setBounds(30, 110, 80, 40);
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/41.png"))); // NOI18N
         jLabel4.setText("jLabel2");
         jPanel1.add(jLabel4);
         jLabel4.setBounds(30, 260, 80, 40);
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/38.png"))); // NOI18N
         jLabel5.setText("jLabel2");
         jPanel1.add(jLabel5);
         jLabel5.setBounds(30, 210, 80, 40);
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/37.png"))); // NOI18N
         jLabel6.setText("jLabel2");
         jPanel1.add(jLabel6);
         jLabel6.setBounds(30, 160, 80, 40);
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/26.png"))); // NOI18N
         jLabel7.setText("jLabel2");
         jPanel1.add(jLabel7);
         jLabel7.setBounds(30, 410, 80, 40);
@@ -640,15 +678,22 @@ public class Event extends javax.swing.JFrame {
         jPanel1.add(jScrollPane2);
         jScrollPane2.setBounds(110, 410, 240, 80);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/19.png"))); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton1);
         jButton1.setBounds(650, 620, 190, 40);
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/20.png"))); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton2);
         jButton2.setBounds(850, 620, 190, 40);
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/21.png"))); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -657,58 +702,31 @@ public class Event extends javax.swing.JFrame {
         jPanel1.add(jButton3);
         jButton3.setBounds(1050, 620, 190, 40);
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/18.png"))); // NOI18N
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton4);
         jButton4.setBounds(450, 620, 190, 40);
 
-        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/40.png"))); // NOI18N
         jLabel8.setText("jLabel2");
         jPanel1.add(jLabel8);
         jLabel8.setBounds(30, 360, 80, 40);
 
-        end_date.setBackground(new java.awt.Color(255, 255, 204));
-        end_date.setToolTipText("");
-        end_date.setDateFormatString("yyyy-MM-dd");
-        end_date.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        end_date.addAncestorListener(new javax.swing.event.AncestorListener() {
-            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
-                end_dateAncestorAdded(evt);
-            }
-            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
-            }
-            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
-            }
-        });
         jPanel1.add(end_date);
         end_date.setBounds(110, 360, 240, 40);
 
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/22.png"))); // NOI18N
         jLabel12.setText("jLabel2");
         jPanel1.add(jLabel12);
         jLabel12.setBounds(30, 60, 80, 40);
 
-        start_date.setBackground(new java.awt.Color(255, 255, 204));
-        start_date.setToolTipText("");
-        start_date.setDateFormatString("yyyy-MM-dd");
-        start_date.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        start_date.addAncestorListener(new javax.swing.event.AncestorListener() {
-            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
-                start_dateAncestorAdded(evt);
-            }
-            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
-            }
-            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
-            }
-        });
         jPanel1.add(start_date);
         start_date.setBounds(110, 310, 240, 40);
 
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/39.png"))); // NOI18N
         jLabel13.setText("jLabel2");
         jPanel1.add(jLabel13);
         jLabel13.setBounds(30, 310, 80, 40);
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/17.png"))); // NOI18N
         jPanel1.add(jLabel1);
         jLabel1.setBounds(-70, 0, 1400, 710);
 
@@ -749,10 +767,179 @@ public class Event extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_start_dateAncestorAdded
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+ //insert
+        con= Connect.connect();
+
+        if(name_event.getText().equals(""))
+        {
+            JOptionPane.showMessageDialog(null,"Enter your name" );
+        }
+        
+        else if(place.getText().equals(""))
+        {
+            JOptionPane.showMessageDialog(null,"Enter place" );
+        }
+        
+        else if(number.getText().equals(""))
+        {
+            JOptionPane.showMessageDialog(null,"Enter your number" );
+        }
+        
+        else if(price.getText().equals(""))
+        {
+            JOptionPane.showMessageDialog(null,"Enter price" );
+        }
+        
+        else{
+         
+
+         try {
+
+            String sdate =((JTextField) start_date.getDateEditor().getUiComponent()).getText(); 
+            String edate =((JTextField) end_date.getDateEditor().getUiComponent()).getText(); 
+            String sql="select * from event where name_event='"+name_event.getText()+"' ";
+            pst = con.prepareStatement(sql);
+            rst=pst.executeQuery();
+            if(rst.next())
+            {
+                JOptionPane.showMessageDialog(null,"name no already exists" );
+                reset();
+            }
+            
+           
+            
+            String sql2="insert into event(name_event,place,number,price,notes,start_date,end_date) values('"+name_event.getText()+"','"+place.getText()+"','"+number.getText()+"','"+price.getText()+"','"+notes.getText()+"' ,'" + sdate + "','" + edate + "' )  ";
+
+             
+            pst =con.prepareStatement(sql2);
+            pst.execute();
+            
+            JOptionPane.showMessageDialog(null,"saved successfully " );
+
+
+        }catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+          
+          fatch();
+          reset();
+         }
+          
+          
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+//update
+        try { 
+        String sdate =((JTextField) start_date.getDateEditor().getUiComponent()).getText(); 
+        String edate =((JTextField) end_date.getDateEditor().getUiComponent()).getText(); 
+        
+        String sql= "update event set name_event='"+name_event.getText()+"',place='"+place.getText()+"',number='"+number.getText()+"',price='"+price.getText()+"',start_date='"+sdate+"',end_date='"+edate+"',notes='"+notes.getText()+"'  where event_id ='"+event_id.getText()+"'";
+
+
+            pst =con.prepareStatement(sql);
+            pst.execute();
+
+            JOptionPane.showMessageDialog(null, "Edited");
+            reset();
+        }catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+                    
+        
+        fatch();
+        
+
+
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+//delete
+       int val = JOptionPane.showConfirmDialog(null, "do you want to delete");
+       if(val==0){
+            try{
+                String sql= "delete from event where event_id ='"+event_id.getText()+"'";
+
+                pst =con.prepareStatement(sql);
+                pst.execute();
+                JOptionPane.showMessageDialog(null, "deleted");
+                reset();
+
+            }catch(Exception e)
+            {
+                JOptionPane.showMessageDialog(null, e.getMessage());
+            }
+       }
+        
+         fatch();
+        
+        
+        
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {                                     
+        // TODO add your handling code here:
+        //table
+        int r=jTable1.getSelectedRow();
+        String n = jTable1.getModel().getValueAt(r, 0).toString();
+        try{
+
+            String sql1 ="Select * from event where event_id = '"+n +"'";
+
+            pst =con.prepareStatement(sql1);
+            rst =pst.executeQuery();
+            
+            if(rst.next())
+            {
+                String code = rst.getString("event_id");
+                event_id.setText(code);
+                
+                String x = rst.getString("name_event");
+                name_event.setText(x);
+                
+                String x1 = rst.getString("place");
+                place.setText(x1);
+                
+                String x2 = rst.getString("number");
+                number.setText(x2);
+                
+                 String x3 = rst.getString("price");
+                price.setText(x3);
+                
+                String x4 = rst.getString("notes");
+                notes.setText(x4);
+                
+                java.sql.Date sdate=rst.getDate("start_date");
+                start_date.setDate(sdate);
+                
+                java.sql.Date edate=rst.getDate("end_date");
+                end_date.setDate(edate);
+                
+                
+                
+            }
+
+        }catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            JOptionPane.showMessageDialog(this, "error" + e.getMessage());
+            e.printStackTrace();
+        }
+     }
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.toedter.calendar.JDateChooser end_date;
+    private org.netbeans.modules.form.InvalidComponent end_date;
     protected javax.swing.JTextField event_id;
     protected javax.swing.JButton jButton1;
     protected javax.swing.JButton jButton2;
@@ -776,6 +963,6 @@ public class Event extends javax.swing.JFrame {
     protected javax.swing.JTextField number;
     protected javax.swing.JTextField place;
     protected javax.swing.JTextField price;
-    private com.toedter.calendar.JDateChooser start_date;
+    private org.netbeans.modules.form.InvalidComponent start_date;
     // End of variables declaration//GEN-END:variables
 }

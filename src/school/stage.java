@@ -1,5 +1,11 @@
 package school;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import net.proteanit.sql.DbUtils;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -12,13 +18,38 @@ package school;
  */
 public class stage extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Home
-     */
+   
+    Connection con=null;
+    PreparedStatement st=null;
+    ResultSet rs=null; 
+    
     public stage() {
         initComponents();
+    con=Connect.connect();
+         fatch(); 
+    
     }
 
+    
+    public void fatch(){
+    try {
+     
+       String g = " select stage_id,stage_name,price,teacher_name,notes  from stage ";
+
+
+
+    st =con.prepareStatement(g);
+    rs=st.executeQuery();
+
+    
+    jTable1.setModel(DbUtils.resultSetToTableModel(rs));
+        
+    } catch (Exception e) {
+    JOptionPane.showMessageDialog(null, e);
+    } 
+}
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -562,12 +593,16 @@ public class stage extends javax.swing.JFrame {
                 "ID", "Name", "price", "Teacher Name", "Notes"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jPanel1.add(jScrollPane1);
         jScrollPane1.setBounds(452, 122, 810, 530);
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/22.png"))); // NOI18N
         jLabel2.setText("jLabel2");
         jPanel1.add(jLabel2);
         jLabel2.setBounds(30, 80, 80, 40);
@@ -583,27 +618,22 @@ public class stage extends javax.swing.JFrame {
         jPanel1.add(stage_id);
         stage_id.setBounds(110, 80, 240, 40);
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/23.png"))); // NOI18N
         jLabel3.setText("jLabel2");
         jPanel1.add(jLabel3);
         jLabel3.setBounds(30, 180, 80, 40);
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/24.png"))); // NOI18N
         jLabel4.setText("jLabel2");
         jPanel1.add(jLabel4);
         jLabel4.setBounds(30, 280, 80, 40);
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/27.png"))); // NOI18N
         jLabel5.setText("jLabel2");
         jPanel1.add(jLabel5);
         jLabel5.setBounds(30, 230, 80, 40);
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/25.png"))); // NOI18N
         jLabel6.setText("jLabel2");
         jPanel1.add(jLabel6);
         jLabel6.setBounds(30, 130, 80, 40);
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/26.png"))); // NOI18N
         jLabel7.setText("jLabel2");
         jPanel1.add(jLabel7);
         jLabel7.setBounds(30, 330, 80, 40);
@@ -640,15 +670,22 @@ public class stage extends javax.swing.JFrame {
         jPanel1.add(jScrollPane2);
         jScrollPane2.setBounds(110, 330, 240, 80);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/19.png"))); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton1);
         jButton1.setBounds(110, 490, 190, 40);
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/20.png"))); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton2);
         jButton2.setBounds(110, 540, 190, 40);
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/21.png"))); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -657,11 +694,13 @@ public class stage extends javax.swing.JFrame {
         jPanel1.add(jButton3);
         jButton3.setBounds(110, 590, 190, 40);
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/18.png"))); // NOI18N
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton4);
         jButton4.setBounds(110, 440, 190, 40);
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/17.png"))); // NOI18N
         jPanel1.add(jLabel1);
         jLabel1.setBounds(-70, 0, 1400, 710);
 
@@ -693,6 +732,170 @@ public class stage extends javax.swing.JFrame {
     private void priceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_priceActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_priceActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+
+  con =Connect.connect();
+     
+     if(stage_name.equals(""))
+     {
+         JOptionPane.showMessageDialog(null, "Enter stage_name");
+     } 
+     
+     if(flage.equals(""))
+     {
+         JOptionPane.showMessageDialog(null, "Enter the Name");
+     }
+    
+     if(teacher_name.equals(""))
+     {
+         JOptionPane.showMessageDialog(null, "Enter the teacher name");
+     }
+     
+     if(price.equals(""))
+     {
+         JOptionPane.showMessageDialog(null, "Enter the price");
+     }
+     
+     try{
+         
+       
+        
+        String sql=" insert into stage (stage_name,price,teacher_name,flage,notes)values( '"+stage_name.getText()+"','"+price.getText()+"','"+teacher_name.getText()+"','"+flage.getText()+"','"+notes.getText()+"' )";
+        st=con.prepareStatement(sql);
+        st.execute();
+        JOptionPane.showMessageDialog(null, " Saved Successfully "); 
+        
+         
+     }
+     catch(Exception e){
+         
+        JOptionPane.showMessageDialog(null, e.getMessage());  
+ 
+     }
+        
+        fatch();    
+      
+
+// TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+   
+      con =Connect.connect();
+     
+     if(stage_name.equals(""))
+     {
+         JOptionPane.showMessageDialog(null, "Enter stage_name");
+     } 
+     
+     if(flage.equals(""))
+     {
+         JOptionPane.showMessageDialog(null, "Enter the Name");
+     }
+    
+     if(teacher_name.equals(""))
+     {
+         JOptionPane.showMessageDialog(null, "Enter the teacher name");
+     }
+     
+     if(price.equals(""))
+     {
+         JOptionPane.showMessageDialog(null, "Enter the price");
+     }
+        
+     String sql=" update stage set stage_name='"+stage_name.getText()+"',price='"+price.getText()+"',	teacher_name='"+teacher_name.getText()+"',flage='"+flage.getText()+"',notes='"+notes.getText()+"' where stage_id='"+stage_id.getText()+"'";
+    
+    try{
+        
+        st=con.prepareStatement(sql);
+        st.execute();
+         JOptionPane.showMessageDialog(null, " updated Successfully ");   
+        
+    }catch(Exception e){
+        
+        JOptionPane.showMessageDialog(null, e.getMessage());   
+    }
+        
+     
+      fatch(); 
+   
+
+     
+// TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
+  con=Connect.connect();
+    String sql=" delete from stage where stage_id='"+stage_id.getText()+"' ";
+    
+    try{
+        
+        st=con.prepareStatement(sql);
+        st.execute();
+         JOptionPane.showMessageDialog(null, " Deleted Successfully ");   
+        
+    }catch(Exception e){
+        
+        JOptionPane.showMessageDialog(null, e.getMessage());   
+    }
+
+     fatch(); 
+           
+// TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+
+         int r=jTable1.getSelectedRow();
+        String n = jTable1.getModel().getValueAt(r, 0).toString();
+        try{
+
+            String sql1 ="Select * from stage where stage_id = '"+n +"'";
+
+            st =con.prepareStatement(sql1);
+            rs =st.executeQuery();
+            
+            if(rs.next())
+            {
+                String code = rs.getString("stage_id");
+                stage_id.setText(code);
+                
+                String x = rs.getString("stage_name");
+                stage_name.setText(x);
+                
+                String x1 = rs.getString("flage");
+                flage.setText(x1);
+                
+                String x2 = rs.getString("teacher_name");
+                teacher_name.setText(x2);
+                
+                 String x3 = rs.getString("price");
+                price.setText(x3);
+                
+                String x4 = rs.getString("notes");
+                notes.setText(x4);
+                
+                
+                
+                
+                
+            }
+
+        }catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            JOptionPane.showMessageDialog(this, " Error to retrieve data" + e.getMessage());
+            e.printStackTrace();
+        }
+
+        
+        
+        
+// TODO add your handling code here:
+    }//GEN-LAST:event_jTable1MouseClicked
 
    
 

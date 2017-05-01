@@ -84,7 +84,7 @@ public class teacher extends javax.swing.JFrame {
         Search = new javax.swing.JComboBox<>();
         ser = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        jButton5 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -752,8 +752,14 @@ public class teacher extends javax.swing.JFrame {
         jLabel11.setText("jLabel2");
         jPanel1.add(jLabel11);
         jLabel11.setBounds(460, 50, 120, 40);
-        jPanel1.add(jLabel1);
-        jLabel1.setBounds(-60, 0, 1400, 710);
+
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton5);
+        jButton5.setBounds(950, 50, 120, 40);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -882,6 +888,36 @@ try {
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        if(Search.getSelectedItem().equals("ID"))
+        {
+            try {
+                //String sql3="SELECT * FROM `student` WHERE CONCAT(`name`)LIKE'%"+ser.getText()+"%'";
+                String g = "select teacher_id,name,subject,phone,address,salary,class_num,notes from teacher where teacher_id='"+ser.getText()+"' " ;
+
+                pst = con.prepareStatement(g);
+                rst = pst.executeQuery();
+
+                jTable1.setModel(DbUtils.resultSetToTableModel(rst));
+            } catch (Exception e) {
+            }
+        }else if (Search.getSelectedItem().equals("Name"))
+        {
+            try {
+                //String sql4="SELECT * FROM `student` WHERE CONCAT(`phone`)LIKE'%"+ser.getText()+"%'";
+                String g1 = "select teacher_id,name,subject,phone,address,salary,class_num,notes from teacher where name='"+ser.getText()+"' " ;
+
+                pst = con.prepareStatement(g1);
+                rst = pst.executeQuery();
+
+                jTable1.setModel(DbUtils.resultSetToTableModel(rst));
+            } catch (Exception e) {
+            }
+
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
+
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -892,7 +928,7 @@ try {
     protected javax.swing.JButton jButton2;
     protected javax.swing.JButton jButton3;
     protected javax.swing.JButton jButton4;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;

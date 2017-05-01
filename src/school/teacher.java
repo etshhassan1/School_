@@ -1,5 +1,11 @@
 package school;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import net.proteanit.sql.DbUtils;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -12,12 +18,33 @@ package school;
  */
 public class teacher extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Home
-     */
+    Connection con = null;
+    PreparedStatement pst = null;
+    ResultSet rst = null;
+    String unicode = "?useUnicode=yes&characterEncoding=UTF-8";
+
     public teacher() {
         initComponents();
+        con = Connect.connect();
+
+        fatch();
     }
+
+    public void fatch() {
+
+        try {
+            String g = "select teacher_id,name,subject from teacher ";
+
+            pst = con.prepareStatement(g);
+            rst = pst.executeQuery();
+
+            jTable1.setModel(DbUtils.resultSetToTableModel(rst));
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -571,12 +598,16 @@ public class teacher extends javax.swing.JFrame {
                 "ID", "Name", "price", "Teacher Name", "Notes"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jPanel1.add(jScrollPane1);
         jScrollPane1.setBounds(450, 110, 800, 500);
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/22.png"))); // NOI18N
         jLabel2.setText("jLabel2");
         jPanel1.add(jLabel2);
         jLabel2.setBounds(40, 50, 80, 40);
@@ -592,27 +623,22 @@ public class teacher extends javax.swing.JFrame {
         jPanel1.add(teacher_id);
         teacher_id.setBounds(120, 50, 240, 40);
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/23.png"))); // NOI18N
         jLabel3.setText("jLabel2");
         jPanel1.add(jLabel3);
         jLabel3.setBounds(40, 100, 80, 40);
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/31.png"))); // NOI18N
         jLabel4.setText("jLabel2");
         jPanel1.add(jLabel4);
         jLabel4.setBounds(40, 300, 80, 40);
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/29.png"))); // NOI18N
         jLabel5.setText("jLabel2");
         jPanel1.add(jLabel5);
         jLabel5.setBounds(40, 250, 80, 40);
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/35.png"))); // NOI18N
         jLabel6.setText("jLabel2");
         jPanel1.add(jLabel6);
         jLabel6.setBounds(40, 150, 80, 40);
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/26.png"))); // NOI18N
         jLabel7.setText("jLabel2");
         jPanel1.add(jLabel7);
         jLabel7.setBounds(40, 450, 80, 40);
@@ -649,15 +675,22 @@ public class teacher extends javax.swing.JFrame {
         jPanel1.add(jScrollPane2);
         jScrollPane2.setBounds(120, 450, 240, 80);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/19.png"))); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton1);
         jButton1.setBounds(120, 590, 190, 40);
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/20.png"))); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton2);
         jButton2.setBounds(120, 640, 190, 40);
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/21.png"))); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -666,7 +699,11 @@ public class teacher extends javax.swing.JFrame {
         jPanel1.add(jButton3);
         jButton3.setBounds(1060, 620, 190, 40);
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/18.png"))); // NOI18N
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton4);
         jButton4.setBounds(120, 540, 190, 40);
 
@@ -680,12 +717,10 @@ public class teacher extends javax.swing.JFrame {
         jPanel1.add(class_num);
         class_num.setBounds(120, 400, 240, 40);
 
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/28.png"))); // NOI18N
         jLabel9.setText("jLabel2");
         jPanel1.add(jLabel9);
         jLabel9.setBounds(40, 400, 80, 40);
 
-        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/36.png"))); // NOI18N
         jLabel10.setText("jLabel2");
         jPanel1.add(jLabel10);
         jLabel10.setBounds(40, 350, 80, 40);
@@ -700,7 +735,6 @@ public class teacher extends javax.swing.JFrame {
         jPanel1.add(stage);
         stage.setBounds(120, 200, 240, 40);
 
-        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/25.png"))); // NOI18N
         jLabel8.setText("jLabel2");
         jPanel1.add(jLabel8);
         jLabel8.setBounds(40, 200, 80, 40);
@@ -715,12 +749,9 @@ public class teacher extends javax.swing.JFrame {
         jPanel1.add(ser);
         ser.setBounds(580, 50, 240, 40);
 
-        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/34.png"))); // NOI18N
         jLabel11.setText("jLabel2");
         jPanel1.add(jLabel11);
         jLabel11.setBounds(460, 50, 120, 40);
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/17.png"))); // NOI18N
         jPanel1.add(jLabel1);
         jLabel1.setBounds(-60, 0, 1400, 710);
 
@@ -756,6 +787,100 @@ public class teacher extends javax.swing.JFrame {
     private void class_numActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_class_numActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_class_numActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+ try {
+
+            String sql = "insert into teacher(name,subject,phone,address,salary,class_num,notes) values "
+                    + "   ('" + name.getText() + "','" + subject.getText() + "','" + phone.getText() + "','" + address.getText() + "','" + notes.getText() + "','" + salary.getText() + "','" + class_num.getText() + "')";
+
+            pst = con.prepareStatement(sql);
+            pst.execute();
+
+            JOptionPane.showMessageDialog(null, "‰„ «÷«›… «·„œ—”");
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+
+        }
+        fatch();        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+try {
+
+            String sql = "update teacher set name='" + name.getText().toString() + "',subject='" + subject.getText() + "',phone='" + phone.getText() + "',address='" + address.getText() + "',salary='" + salary.getText() + "',notes='" + notes.getText() + "',class_num='" + class_num.getText() + "' where teacher_id='" + teacher_id.getText() + "' ";
+
+            pst = con.prepareStatement(sql);
+            pst.execute();
+
+            JOptionPane.showMessageDialog(null, " „  ⁄œÌ· «·»Ì«‰« ");
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+                 fatch(); 
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+         int val = JOptionPane.showConfirmDialog(null, "Â·  —Ìœ Õ–› «·»Ì«‰«  ");
+        if (val == 0) {
+        }
+        try {
+            String sql = "delete from teacher where teacher_id ='" + teacher_id.getText() + "'";
+
+            pst = con.prepareStatement(sql);
+            pst.execute();
+            JOptionPane.showMessageDialog(null, " „ «·Õ–› »‰Ã«Õ");
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        fatch();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+ int r = jTable1.getSelectedRow();
+        String n = jTable1.getModel().getValueAt(r, 0).toString();
+        try {
+
+            String sql1 = "Select * from teacher where teacher_id = '" + n + "'";
+            pst = con.prepareStatement(sql1);
+            rst = pst.executeQuery();
+
+            if (rst.next()) {
+                String code = rst.getString("teacher_id");
+                teacher_id.setText(code);
+
+                String x = rst.getString("name");
+                name.setText(x);
+
+                String x6 = rst.getString("subject");
+                subject.setText(x6);
+
+                String x1 = rst.getString("phone");
+                phone.setText(x1);
+
+                String x2 = rst.getString("address");
+                address.setText(x2);
+
+                String x4 = rst.getString("salary");
+                salary.setText(x4);
+
+                String x5 = rst.getString("class_num");
+                class_num.setText(x5);
+
+                String x3 = rst.getString("notes");
+                notes.setText(x3);
+
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            JOptionPane.showMessageDialog(this, " Œÿ√ ›Ï √” —Ã«⁄ «·»Ì«‰« " + e.getMessage());
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
 
    
 

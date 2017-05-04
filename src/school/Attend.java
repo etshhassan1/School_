@@ -1,5 +1,11 @@
 package school;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import net.proteanit.sql.DbUtils;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -15,8 +21,12 @@ public class Attend extends javax.swing.JFrame {
     /**
      * Creates new form Home
      */
+        Connection con = null;
+    PreparedStatement pst = null;
+    ResultSet rst = null;
     public Attend() {
         initComponents();
+        con=Connect.connect();
     }
 
     /**
@@ -569,7 +579,6 @@ public class Attend extends javax.swing.JFrame {
         jPanel1.add(jScrollPane1);
         jScrollPane1.setBounds(460, 170, 800, 440);
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/22.png"))); // NOI18N
         jLabel2.setText("jLabel2");
         jPanel1.add(jLabel2);
         jLabel2.setBounds(40, 150, 80, 40);
@@ -585,17 +594,14 @@ public class Attend extends javax.swing.JFrame {
         jPanel1.add(phone);
         phone.setBounds(120, 450, 240, 40);
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/23.png"))); // NOI18N
         jLabel3.setText("jLabel2");
         jPanel1.add(jLabel3);
         jLabel3.setBounds(40, 300, 80, 40);
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/54.png"))); // NOI18N
         jLabel5.setText("jLabel2");
         jPanel1.add(jLabel5);
         jLabel5.setBounds(40, 500, 80, 40);
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/21.png"))); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -604,16 +610,18 @@ public class Attend extends javax.swing.JFrame {
         jPanel1.add(jButton3);
         jButton3.setBounds(1060, 620, 190, 40);
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/56.png"))); // NOI18N
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton4);
         jButton4.setBounds(880, 70, 250, 80);
 
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/53.png"))); // NOI18N
         jLabel9.setText("jLabel2");
         jPanel1.add(jLabel9);
         jLabel9.setBounds(40, 80, 80, 40);
 
-        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/25.png"))); // NOI18N
         jLabel8.setText("jLabel2");
         jPanel1.add(jLabel8);
         jLabel8.setBounds(40, 350, 80, 40);
@@ -678,21 +686,27 @@ public class Attend extends javax.swing.JFrame {
         jPanel1.add(name);
         name.setBounds(120, 150, 240, 40);
 
-        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/28.png"))); // NOI18N
         jLabel11.setText("jLabel2");
         jPanel1.add(jLabel11);
         jLabel11.setBounds(40, 400, 80, 40);
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/29.png"))); // NOI18N
         jLabel6.setText("jLabel2");
         jPanel1.add(jLabel6);
         jLabel6.setBounds(40, 450, 80, 40);
 
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/34.png"))); // NOI18N
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton5);
         jButton5.setBounds(250, 200, 110, 40);
 
-        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/55.png"))); // NOI18N
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton6);
         jButton6.setBounds(560, 70, 250, 80);
 
@@ -700,8 +714,6 @@ public class Attend extends javax.swing.JFrame {
         Search.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Name" }));
         jPanel1.add(Search);
         Search.setBounds(40, 200, 150, 40);
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/17.png"))); // NOI18N
         jPanel1.add(jLabel1);
         jLabel1.setBounds(-60, 0, 1400, 710);
 
@@ -749,6 +761,114 @@ public class Attend extends javax.swing.JFrame {
     private void attend_recoderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_attend_recoderActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_attend_recoderActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        
+        try{
+
+           String sql1 ="Select * from student where id = '"+name.getText()+"'";
+            
+            
+           // String sql1="SELECT * from student INNER JOIN attend ON Orders.CustomerID=Customers.CustomerID;"
+                    
+            
+            
+            pst =con.prepareStatement(sql1);
+            rst =pst.executeQuery();
+            
+            if(rst.next())
+            {
+                String code = rst.getString("name");
+                student_name.setText(code);
+                
+                String x = rst.getString("stage");
+                stage.setText(x);
+                
+                String x1 = rst.getString("class");
+                class_num.setText(x1);
+                
+                String x2 = rst.getString("phone");
+                phone.setText(x2);
+                
+                
+                
+                
+                
+                
+                
+            }
+
+
+               }
+               catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            JOptionPane.showMessageDialog(this, "error" + e.getMessage());
+            e.printStackTrace();
+        }
+
+    
+    
+
+
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+         //record
+         if(student_name.getText().equals(""))
+        {
+            JOptionPane.showMessageDialog(null,"error" );
+        }
+         else if(stage.getText().equals(""))
+        {
+            JOptionPane.showMessageDialog(null,"error" );
+        }
+        else if(class_num.getText().equals(""))
+        {
+            JOptionPane.showMessageDialog(null,"error" );
+        }
+        else if(phone.getText().equals(""))
+        {
+            JOptionPane.showMessageDialog(null,"error" );
+        }
+                else{
+        try {
+
+            
+          
+            String sql = "insert into attend (student_id,student_name,stage,class,date) values "
+            + "   ('"+name.getText()+"','"+student_name.getText()+"','"+stage.getText()+"','"+class_num.getText()+"','"+date_att.getText()+"')";
+           
+             
+            pst =con.prepareStatement(sql);
+            pst.execute();
+
+
+        }catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+         //show
+            try {
+   String sql ="select * from attend where student_id = '"+name.getText()+"'";
+   
+    pst =con.prepareStatement(sql);
+    rst=pst.executeQuery();
+
+    
+    jTable1.setModel(DbUtils.resultSetToTableModel(rst));
+        
+    } catch (Exception e) {
+    JOptionPane.showMessageDialog(null, e);
+    }
+    }//GEN-LAST:event_jButton4ActionPerformed
 
    
 

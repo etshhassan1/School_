@@ -1,6 +1,11 @@
 package school;
 
-import java.text.DateFormat;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import net.proteanit.sql.DbUtils;
 import java.text.SimpleDateFormat;
 
 /*
@@ -14,13 +19,31 @@ import java.text.SimpleDateFormat;
  * @author Etsh
  */
 public class stu_pro2 extends javax.swing.JFrame {
+    ResultSet rs = null;
+    PreparedStatement st = null;
+    Connection con = null;
 
     /**
      * Creates new form Home
      */
     public stu_pro2() {
+        con = Connect.connect();
+
+        fatch();
         initComponents();
     }
+    public void fatch() {
+        try {
+            String g = "select id_pro,first_side,second_side,first_notes,second_note,supervi,sup_notes,date_pro from pro3";
+            st = con.prepareStatement(g);
+            rs = st.executeQuery();
+            jTable1.setModel(DbUtils.resultSetToTableModel(rs));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -575,12 +598,16 @@ public class stu_pro2 extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jPanel1.add(jScrollPane1);
         jScrollPane1.setBounds(510, 120, 800, 490);
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/21.png"))); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -600,17 +627,14 @@ public class stu_pro2 extends javax.swing.JFrame {
         jPanel1.add(date_pro);
         date_pro.setBounds(110, 110, 240, 40);
 
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/22.png"))); // NOI18N
         jLabel12.setText("jLabel2");
         jPanel1.add(jLabel12);
         jLabel12.setBounds(30, 60, 80, 40);
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/53.png"))); // NOI18N
         jLabel3.setText("jLabel2");
         jPanel1.add(jLabel3);
         jLabel3.setBounds(30, 110, 80, 40);
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/606.png"))); // NOI18N
         jLabel6.setText("jLabel2");
         jPanel1.add(jLabel6);
         jLabel6.setBounds(30, 160, 80, 40);
@@ -625,7 +649,6 @@ public class stu_pro2 extends javax.swing.JFrame {
         jPanel1.add(second_side);
         second_side.setBounds(110, 210, 240, 40);
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/607.png"))); // NOI18N
         jLabel5.setText("jLabel2");
         jPanel1.add(jLabel5);
         jLabel5.setBounds(30, 210, 80, 40);
@@ -641,7 +664,6 @@ public class stu_pro2 extends javax.swing.JFrame {
         jPanel1.add(id_pro);
         id_pro.setBounds(110, 60, 240, 40);
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/608.png"))); // NOI18N
         jLabel7.setText("jLabel2");
         jPanel1.add(jLabel7);
         jLabel7.setBounds(20, 480, 80, 40);
@@ -674,22 +696,18 @@ public class stu_pro2 extends javax.swing.JFrame {
         jPanel1.add(jScrollPane4);
         jScrollPane4.setBounds(240, 370, 190, 90);
 
-        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/608.png"))); // NOI18N
         jLabel8.setText("jLabel2");
         jPanel1.add(jLabel8);
         jLabel8.setBounds(30, 260, 80, 40);
 
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/606.png"))); // NOI18N
         jLabel9.setText("jLabel2");
         jPanel1.add(jLabel9);
         jLabel9.setBounds(20, 330, 80, 40);
 
-        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/607.png"))); // NOI18N
         jLabel10.setText("jLabel2");
         jPanel1.add(jLabel10);
         jLabel10.setBounds(240, 330, 80, 40);
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/18.png"))); // NOI18N
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -698,11 +716,19 @@ public class stu_pro2 extends javax.swing.JFrame {
         jPanel1.add(jButton4);
         jButton4.setBounds(510, 620, 190, 40);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/19.png"))); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton1);
         jButton1.setBounds(710, 620, 190, 40);
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/20.png"))); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton2);
         jButton2.setBounds(920, 620, 190, 40);
 
@@ -716,16 +742,17 @@ public class stu_pro2 extends javax.swing.JFrame {
         jPanel1.add(ser);
         ser.setBounds(630, 60, 240, 40);
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/34.png"))); // NOI18N
         jLabel2.setText("jLabel2");
         jPanel1.add(jLabel2);
         jLabel2.setBounds(510, 60, 120, 40);
 
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/34.png"))); // NOI18N
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton5);
         jButton5.setBounds(1010, 60, 120, 40);
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/17.png"))); // NOI18N
         jPanel1.add(jLabel1);
         jLabel1.setBounds(0, 0, 1330, 710);
 
@@ -759,8 +786,143 @@ public class stu_pro2 extends javax.swing.JFrame {
     }//GEN-LAST:event_id_proActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+
+        try {
+            String sdate = ((JTextField) date_pro.getDateEditor().getUiComponent()).getText();
+            String sql = "insert into pro3(first_side,second_side,first_notes,second_note,supervi,sup_notes,date_pro) values "
+                    + "('" + first_side.getText() + "','" + second_side.getText() + "','" + first_notes.getText() + "','" + second_notes.getText() + "','" + supervi.getSelectedItem() + "','" + super_notes.getText() + "','" + sdate + "')";
+
+            st = con.prepareStatement(sql);
+            st.execute();
+
+            JOptionPane.showMessageDialog(null, "Saved Successfully");
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+
+        fatch();
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        if(Search.getSelectedItem().equals("ID"))
+      {
+          try {
+              String g = "select id_pro,first_side,second_side,first_notes,second_note,supervi,sup_notes,date_pro from pro3 where id_pro='"+ser.getText()+"' " ;
+
+               st = con.prepareStatement(g);
+                           rs = st.executeQuery();
+
+            jTable1.setModel(DbUtils.resultSetToTableModel(rs));
+          } catch (Exception e) {
+          }
+      }else if (Search.getSelectedItem().equals("Name"))
+      {
+       try {
+                String g1 = "select id_pro,first_side,second_side,first_notes,second_note,supervi,sup_notes,date_pro from pro3 where first_side='"+ser.getText()+"'OR second_side='"+ser.getText()+"' " ;
+
+               st = con.prepareStatement(g1);
+                           rs = st.executeQuery();
+
+            jTable1.setModel(DbUtils.resultSetToTableModel(rs));
+          } catch (Exception e) {
+          }
+          
+      }else if (Search.getSelectedItem().equals("Supervisor"))
+      {
+       try {
+        String g12 = "select select id_pro,first_side,second_side,first_notes,second_note,supervi,sup_notes,date_pro from pro3 where supervi='"+ser.getText()+"' " ;
+
+               st = con.prepareStatement(g12);
+                           rs = st.executeQuery();
+
+            jTable1.setModel(DbUtils.resultSetToTableModel(rs));
+          } catch (Exception e) {
+          }
+      }
+        
+// TODO add your handling code here:
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+       String sdate = ((JTextField) date_pro.getDateEditor().getUiComponent()).getText();
+
+        try {
+            String sql = "update  pro3 set first_side='" + first_side.getText() + "',second_side='" + second_side.getText() + "',supervi='" + supervi.getSelectedItem()+ "',first_notes='" + first_notes.getText() + "',second_note='" + second_notes.getText() + "',date_pro='" + sdate + "',sup_notes='" + super_notes.getText() + "'where id_pro='"+id_pro.getText()+"' " ;
+            st = con.prepareStatement(sql);
+            st.execute();
+            JOptionPane.showMessageDialog(null, "Edited Successfully");
+        } catch (Exception e) {
+
+        }
+        fatch();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if (first_side.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Enter Name");
+        }
+        con = Connect.connect();
+        String sql = "delete from pro3 where first_side='" + first_side.getText() + "' OR second_side='" + second_side.getText() + "' ";
+        try {
+            st = con.prepareStatement(sql);
+            st.execute();
+            JOptionPane.showMessageDialog(null, "Deleted Successfully");
+        } catch (Exception e) {
+
+        }
+        fatch();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+ int r = jTable1.getSelectedRow();
+        String n = jTable1.getModel().getValueAt(r, 0).toString();
+        try {
+
+            String sql1 = "Select * from pro3 where id_pro = '" + n + "'";
+
+            st = con.prepareStatement(sql1);
+            rs = st.executeQuery();
+
+            if (rs.next()) {
+                String code = rs.getString("id_pro");
+                id_pro.setText(code);
+
+                String x = rs.getString("first_side");
+                first_side.setText(x);
+                String x4 = rs.getString("second_side");
+                second_side.setText(x4);
+
+                String x5 = rs.getString("supervi");
+                supervi.setSelectedItem(x5);
+
+                String x1 = rs.getString("first_notes");
+                first_notes.setText(x1);
+
+                String x6 = rs.getString("second_note");
+                second_notes.setText(x6);
+
+                
+
+                String x2 = rs.getString("sup_notes");
+                super_notes.setText(x2);
+
+                java.sql.Date date2 = rs.getDate("date_pro");
+                date_pro.setDate(date2);
+
+                
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            JOptionPane.showMessageDialog(this, " Error to retrieve data" + e.getMessage());
+        }        // TODO add your handling code here:
+  
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable1MouseClicked
 
    
 

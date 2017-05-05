@@ -788,9 +788,9 @@ public class stu_pro2 extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
 
         try {
-            String sdate = ((JTextField) date_pro.getDateEditor().getUiComponent()).getText();
-            String sql = "insert into pro3(first_side,second_side,first_notes,second_note,supervi,sup_notes,date_pro) values "
-                    + "('" + first_side.getText() + "','" + second_side.getText() + "','" + first_notes.getText() + "','" + second_notes.getText() + "','" + supervi.getSelectedItem() + "','" + super_notes.getText() + "','" + sdate + "')";
+            //String sdate = ((JTextField) date_pro.getDateEditor().getUiComponent()).getText();
+               String sql = "insert into pro3(date_pro,first_side,second_side,first_notes,second_note,supervi,sup_notes) values "
+                    + "('"+date_pro.getText()+"','" + first_side.getText() + "','" + second_side.getText() + "','" + first_notes.getText() + "','" + second_notes.getText() + "','" + supervi.getSelectedItem() + "','" + super_notes.getText() + "')";
 
             st = con.prepareStatement(sql);
             st.execute();
@@ -846,10 +846,10 @@ public class stu_pro2 extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       String sdate = ((JTextField) date_pro.getDateEditor().getUiComponent()).getText();
+//       String sdate = ((JTextField) date_pro.getDateEditor().getUiComponent()).getText();
 
         try {
-            String sql = "update  pro3 set first_side='" + first_side.getText() + "',second_side='" + second_side.getText() + "',supervi='" + supervi.getSelectedItem()+ "',first_notes='" + first_notes.getText() + "',second_note='" + second_notes.getText() + "',date_pro='" + sdate + "',sup_notes='" + super_notes.getText() + "'where id_pro='"+id_pro.getText()+"' " ;
+            String sql = "update  pro3 set first_side='" + first_side.getText() + "',second_side='" + second_side.getText() + "',supervi='" + supervi.getSelectedItem()+ "',first_notes='" + first_notes.getText() + "',second_note='" + second_notes.getText() + "',date_pro='" +date_pro.getText() + "',sup_notes='" + super_notes.getText() + "'where id_pro='"+id_pro.getText()+"' " ;
             st = con.prepareStatement(sql);
             st.execute();
             JOptionPane.showMessageDialog(null, "Edited Successfully");
@@ -910,8 +910,8 @@ public class stu_pro2 extends javax.swing.JFrame {
                 String x2 = rs.getString("sup_notes");
                 super_notes.setText(x2);
 
-                java.sql.Date date2 = rs.getDate("date_pro");
-                date_pro.setDate(date2);
+               String x9 = rs.getString("date_pro");
+                date_pro.setText(x9);
 
                 
             }

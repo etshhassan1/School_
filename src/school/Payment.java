@@ -1,22 +1,48 @@
 package school;
 
+import java.awt.HeadlessException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import net.proteanit.sql.DbUtils;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Etsh
  */
 public class Payment extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Home
-     */
+    Connection con = null;
+    PreparedStatement pst = null;
+    ResultSet rs = null;
+
     public Payment() {
         initComponents();
+        con = Connect.connect();
+        fatch();
+    }
+
+    public void fatch() {
+
+        try {
+            String g = "select * from student";
+
+            pst = con.prepareStatement(g);
+            rs = pst.executeQuery();
+
+            jTable1.setModel(DbUtils.resultSetToTableModel(rs));
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+
     }
 
     /**
@@ -572,12 +598,16 @@ public class Payment extends javax.swing.JFrame {
                 "ID", "Name", "price", "Teacher Name", "Notes"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jPanel1.add(jScrollPane1);
         jScrollPane1.setBounds(470, 130, 790, 390);
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/22.png"))); // NOI18N
         jLabel2.setText("jLabel2");
         jPanel1.add(jLabel2);
         jLabel2.setBounds(40, 130, 80, 40);
@@ -593,27 +623,22 @@ public class Payment extends javax.swing.JFrame {
         jPanel1.add(date_pay);
         date_pay.setBounds(120, 80, 240, 40);
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/23.png"))); // NOI18N
         jLabel3.setText("jLabel2");
         jPanel1.add(jLabel3);
         jLabel3.setBounds(40, 180, 80, 40);
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/53.png"))); // NOI18N
         jLabel4.setText("jLabel2");
         jPanel1.add(jLabel4);
         jLabel4.setBounds(40, 80, 80, 40);
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/24.png"))); // NOI18N
         jLabel5.setText("jLabel2");
         jPanel1.add(jLabel5);
         jLabel5.setBounds(40, 380, 80, 40);
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/28.png"))); // NOI18N
         jLabel6.setText("jLabel2");
         jPanel1.add(jLabel6);
         jLabel6.setBounds(40, 280, 80, 40);
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/61.png"))); // NOI18N
         jLabel7.setText("jLabel2");
         jPanel1.add(jLabel7);
         jLabel7.setBounds(480, 580, 130, 40);
@@ -640,7 +665,6 @@ public class Payment extends javax.swing.JFrame {
         jPanel1.add(jScrollPane2);
         jScrollPane2.setBounds(120, 430, 240, 80);
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/21.png"))); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -649,7 +673,11 @@ public class Payment extends javax.swing.JFrame {
         jPanel1.add(jButton3);
         jButton3.setBounds(1070, 620, 190, 40);
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/59.png"))); // NOI18N
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton4);
         jButton4.setBounds(670, 630, 180, 40);
 
@@ -669,7 +697,6 @@ public class Payment extends javax.swing.JFrame {
         jPanel1.add(student_id);
         student_id.setBounds(120, 130, 240, 40);
 
-        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/25.png"))); // NOI18N
         jLabel8.setText("jLabel2");
         jPanel1.add(jLabel8);
         jLabel8.setBounds(40, 230, 80, 40);
@@ -679,12 +706,10 @@ public class Payment extends javax.swing.JFrame {
         jPanel1.add(phone);
         phone.setBounds(120, 330, 240, 40);
 
-        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/29.png"))); // NOI18N
         jLabel11.setText("jLabel2");
         jPanel1.add(jLabel11);
         jLabel11.setBounds(40, 330, 80, 40);
 
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/34.png"))); // NOI18N
         jLabel9.setText("jLabel2");
         jPanel1.add(jLabel9);
         jLabel9.setBounds(470, 70, 120, 40);
@@ -694,11 +719,19 @@ public class Payment extends javax.swing.JFrame {
         jPanel1.add(Search);
         Search.setBounds(590, 70, 200, 40);
 
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/58.png"))); // NOI18N
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton5);
         jButton5.setBounds(790, 70, 180, 40);
 
-        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/57.png"))); // NOI18N
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton6);
         jButton6.setBounds(250, 380, 110, 40);
 
@@ -712,17 +745,13 @@ public class Payment extends javax.swing.JFrame {
         jPanel1.add(phone2);
         phone2.setBounds(610, 530, 240, 40);
 
-        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/26.png"))); // NOI18N
         jLabel10.setText("jLabel2");
         jPanel1.add(jLabel10);
         jLabel10.setBounds(40, 430, 80, 40);
 
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/60.png"))); // NOI18N
         jLabel12.setText("jLabel2");
         jPanel1.add(jLabel12);
         jLabel12.setBounds(480, 530, 130, 40);
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/school/17.png"))); // NOI18N
         jPanel1.add(jLabel1);
         jLabel1.setBounds(-60, 0, 1400, 710);
 
@@ -755,7 +784,147 @@ public class Payment extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_student_idActionPerformed
 
-   
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        con = Connect.connect();
+        if (student_name.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Enter the Name");
+        }
+
+        if (class_num.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Enter class_num");
+        }
+        if (phone.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Enter phone");
+        }
+        if (price.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Enter price");
+        }
+
+        try {
+            String sql2 = "update student set price='" + price.getText() + "'where id='" + student_id.getText() + "'";
+            pst = con.prepareStatement(sql2);
+            pst.execute();
+            JOptionPane.showMessageDialog(null, "saved successfully");
+
+        } catch (SQLException | HeadlessException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        fatch();
+
+
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+
+        con = Connect.connect();
+
+        if (Search.getSelectedItem().equals("Unpaid")) {
+            try {
+                String sql = "select* from student where price='" + 0 + "'";
+                con = Connect.connect();
+                pst = con.prepareStatement(sql);
+                rs = pst.executeQuery();
+                jTable1.setModel(DbUtils.resultSetToTableModel(rs));
+
+            } catch (SQLException | HeadlessException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage());
+            }
+        }
+
+        if (Search.getSelectedItem().equals("Paid up")) {
+            try {
+                String sql = "select* from student where price !='" + 0 + "'";
+                con = Connect.connect();
+                pst = con.prepareStatement(sql);
+                rs = pst.executeQuery();
+                jTable1.setModel(DbUtils.resultSetToTableModel(rs));
+
+            } catch (SQLException | HeadlessException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage());
+            }
+        }
+
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        int r = jTable1.getSelectedRow();
+        String n = jTable1.getModel().getValueAt(r, 0).toString();
+        try {
+
+            String sql1 = "Select * from student where id = '" + n + "'";
+
+            pst = con.prepareStatement(sql1);
+            rs = pst.executeQuery();
+
+            if (rs.next()) {
+                String code = rs.getString("name");
+                student_name.setText(code);
+
+                String x = rs.getString("id");
+                student_id.setText(x);
+
+                String x1 = rs.getString("price");
+                price.setText(x1);
+
+                String x2 = rs.getString("start_date");
+                date_pay.setText(x2);
+
+                String x3 = rs.getString("phone");
+                phone.setText(x3);
+
+                String x4 = rs.getString("notes");
+                notes.setText(x4);
+
+                String x5 = rs.getString("class");
+                class_num.setText(x5);
+
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            JOptionPane.showMessageDialog(this, "error" + e.getMessage());
+            e.printStackTrace();
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+
+        String sum = null;
+        String sum1 = null;
+
+        phone2.setText("" + sum);
+        phone1.setText("" + sum1);
+
+        con = Connect.connect();
+        try {
+
+            String sql = "Select count(id) from student where  price !='" + 0 + "'";
+
+            pst = con.prepareStatement(sql);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                sum = null;
+                sum = rs.getString("count(id)");
+                phone1.setText(sum);
+
+            }
+            String sql1 = "Select count(id) from student where  price ='" + 0 + "'";
+            pst = con.prepareStatement(sql1);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                sum1 = null;
+                sum1 = rs.getString("count(id)");
+                phone2.setText(sum1);
+
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> Search;
